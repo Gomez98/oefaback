@@ -5,10 +5,9 @@ import com.oefa.tdrcreation.model.Supplier;
 import com.oefa.tdrcreation.service.SupplierService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
@@ -43,6 +42,20 @@ public class SupplierControler {
                         .timeStamp(now())
                         .data(of("supplier", sup))
                         .message( sup == null ? "Supplier not found" : "Supplier updated")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Response> getAllSuppliers(){
+        List<Supplier> list = supplierService.getAllSuppliers();
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("suppliers", list == null ? "" : list))
+                        .message( list.isEmpty() ? "No suppliers registered" : "Suppliers retrieved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

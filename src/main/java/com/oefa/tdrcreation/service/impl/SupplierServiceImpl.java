@@ -6,10 +6,14 @@ import com.oefa.tdrcreation.service.SupplierService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Service
 @Slf4j
+@Transactional
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
@@ -24,5 +28,10 @@ public class SupplierServiceImpl implements SupplierService {
     public Supplier save(Supplier supplier) {
         log.info("Save Employee");
         return supplierRepository.save(supplier);
+    }
+
+    @Override
+    public List<Supplier> getAllSuppliers() {
+        return supplierRepository.findAll();
     }
 }
