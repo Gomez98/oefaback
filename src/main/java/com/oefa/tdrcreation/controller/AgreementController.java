@@ -1,5 +1,6 @@
 package com.oefa.tdrcreation.controller;
 
+import com.oefa.tdrcreation.config.pdf.AgreementTemplate;
 import com.oefa.tdrcreation.model.Agreement;
 import com.oefa.tdrcreation.model.Response;
 import com.oefa.tdrcreation.service.AgreementService;
@@ -28,7 +29,7 @@ public class AgreementController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("agreement", list == null ? "": list))
+                        .data(of("agreements", list == null ? "": list))
                         .message( list.isEmpty() ? "No agreement registered" : "Agreement retrieved")
                         .status(OK)
                         .statusCode(OK.value())
@@ -56,6 +57,21 @@ public class AgreementController {
                 Response.builder()
                         .timeStamp(now())
                         .data(of("agreement", agreementService.create(agreement)))
+                        .message("Agreement created")
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
+                        .build()
+        );
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity<Response> generateAgreement(@RequestBody String supName){
+        AgreementTemplate template = new AgreementTemplate(supName);
+        template.createTemplate();
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("agreement", ""))
                         .message("Agreement created")
                         .status(CREATED)
                         .statusCode(CREATED.value())
